@@ -49,4 +49,4 @@ const middlewares = [
   },
 ];
 
-export { middlewares as paginationQueryParams }
+export { middlewares as paginationQueryParamsMiddleware }
