@@ -1,5 +1,5 @@
 {
-  "name": "shared-middlewares",
+  "name": "@fcai-sis/shared-middlewares",
   "description": "All shared Express middleware and other reusable logical units",
   "version": "1.0.0",
   "main": "./dist/index.js",
