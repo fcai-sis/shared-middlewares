@@ -1,18 +1,22 @@
 {
   "name": "@fcai-sis/shared-middlewares",
   "description": "All shared Express middleware and other reusable logical units",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup",
     "prepublish": "npm run build",
-    "publish": "npm publish --access public"
+    "publish": "npm publish --tag latest",
+    "release:major": "npm version $(semver $npm_package_version -i major) && npm run publish",
+    "release:minor": "npm version $(semver $npm_package_version -i minor) && npm run publish",
+    "release:patch": "npm version $(semver $npm_package_version -i patch) && npm run publish"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.6",
+    "semver": "^7.5.4",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
   },

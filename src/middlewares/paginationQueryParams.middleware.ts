@@ -14,11 +14,11 @@ const middlewares = [
 
     // Ensure that the `page` query parameter exists
     .exists()
-    .withMessage(1)
+    .withMessage("Missing query parameter page")
 
     // Ensure that the `page` query parameter is an integer
     .isInt({ min: 1 })
-    .withMessage(2),
+    .withMessage("Query parameter page must be an integer greater than 0"),
 
   validator
     // Get the `pageSize` query parameter
@@ -26,19 +26,22 @@ const middlewares = [
 
     // Ensure that the `pageSize` query parameter exists
     .exists()
-    .withMessage(3)
+    .withMessage("Missing query parameter pageSize")
 
     // Ensure that the `pageSize` query parameter is an integer
-    .isInt({ min: 1 })
-    .withMessage(4),
-
+    .isInt({ min: 10 })
+    .withMessage("Query parameter pageSize must be an integer greater than 9"),
   (req: Request, res: Response, next: NextFunction) => {
 
     // If any of the validations above failed, return an error response
     const errors = validator.validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json(errors.array());
+      return res.status(400).json({
+        error: {
+          message: errors.array()[0].msg,
+        },
+      });
     }
 
     // Attach the pagination query params to the request body
