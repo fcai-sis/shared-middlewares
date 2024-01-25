@@ -29,8 +29,9 @@ const middlewares = [
     .withMessage("Missing query parameter pageSize")
 
     // Ensure that the `pageSize` query parameter is an integer
-    .isInt({ min: 10 })
-    .withMessage("Query parameter pageSize must be an integer greater than 9"),
+    .isInt({ min: 1 })
+    .withMessage("Query parameter pageSize must be an integer greater than 0"),
+
   (req: Request, res: Response, next: NextFunction) => {
 
     // If any of the validations above failed, return an error response
