@@ -1,6 +1,10 @@
 import * as validator from "express-validator";
 import { NextFunction, Request, Response } from "express";
 
+
+
+export type PaginationQueryParams = {query: {page: number, pageSize: number}};
+
 /**
  * Ensures that the request query parameters `page` and `pageSize` exists and are valid.
  * Also attaches the query parameters to the request body.
@@ -32,7 +36,8 @@ const middlewares = [
     .isInt({ min: 1 })
     .withMessage("Query parameter pageSize must be an integer greater than 0"),
 
-  (req: Request, res: Response, next: NextFunction) => {
+
+  (req: Request&PaginationQueryParams, res: Response, next: NextFunction) => {
 
     // If any of the validations above failed, return an error response
     const errors = validator.validationResult(req);
@@ -44,11 +49,6 @@ const middlewares = [
         },
       });
     }
-
-    // Attach the pagination query params to the request body
-    req.body.page = parseInt(req.query.page as string);
-    req.body.pageSize = parseInt(req.query.pageSize as string);
-
     next();
   },
 ];
