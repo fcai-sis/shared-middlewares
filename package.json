@@ -32,6 +32,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fcai-sis/shared-utilities": "latest",
     "express-validator": "^7.0.1"
   }
 }
