@@ -1,0 +1,52 @@
+enum Role {
+  ADMIN = 'admin',
+  STUDENT = 'student',
+  EMPLOYEE = 'employee',
+  INSTUCTOR = 'instructor',
+  TEACHING_ASSISTANT = 'teachingAssistant',
+}
+
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+
+type MiddlewareRequest = Request & { user?: { userId: string; role: Role } };
+
+/**
+ * Checks if the user has one of the required roles
+ * 
+ * @param requiredRoles The list of roles that are allowed to access the resource
+ * @returns A middleware function that checks if the user has one of the required roles
+ */
+const checkRole = (requiredRoles: Role[]) => {
+  return (req: MiddlewareRequest, res: Response, next: NextFunction) => {
+    // Extract JWT token from authorization header
+    const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ message: 'Authorization token not provided' });
+    }
+
+    try {
+      // Verify JWT token and decode payload
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string; role: Role };
+
+      // Fetch user's role from the decoded token
+      const userRole = decodedToken.role as Role;
+
+      // Check if the user's role matches any of the required roles
+      if (!requiredRoles.includes(userRole)) {
+        return res.status(403).json({ message: `Unauthorized: User must be any of the following: ${requiredRoles.join(', ')}` });
+      }
+
+      // Attach userId and role to the request object for further processing
+      req.user = { userId: decodedToken.userId, role: userRole };
+
+      next(); // User has one of the required roles, proceed to the next middleware or route handler
+    } catch (error) {
+      console.error('Authorization failed:', error);
+      res.status(401).json({ message: 'Invalid token' });
+    }
+  };
+};
+
+export default checkRole;
