@@ -51,4 +51,4 @@ const checkRole = (requiredRoles: Role[]) => {
   };
 };
 
-export { checkRole, Role };
+export { checkRole, Role, TokenPayload };
