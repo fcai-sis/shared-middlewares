@@ -9,6 +9,8 @@ enum Role {
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
+type TokenPayload = { userId: string; role: Role };
+
 type MiddlewareRequest = Request & { user?: { userId: string; role: Role } };
 
 /**
@@ -28,10 +30,10 @@ const checkRole = (requiredRoles: Role[]) => {
 
     try {
       // Verify JWT token and decode payload
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string; role: Role };
+      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
 
       // Fetch user's role from the decoded token
-      const userRole = decodedToken.role as Role;
+      const userRole = decodedToken.role;
 
       // Check if the user's role matches any of the required roles
       if (!requiredRoles.includes(userRole)) {
