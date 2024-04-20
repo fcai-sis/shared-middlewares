@@ -41,7 +41,7 @@ const checkRole = (requiredRoles: Role[]) => {
       }
 
       // Attach userId and role to the request object for further processing
-      req.user = { userId: decodedToken.userId, role: userRole };
+      req.body.user = { userId: decodedToken.userId, role: userRole };
 
       next(); // User has one of the required roles, proceed to the next middleware or route handler
     } catch (error) {
