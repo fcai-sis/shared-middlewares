@@ -21,8 +21,8 @@ type MiddlewareRequest = Request & { user?: TokenPayload };
  */
 const checkRole = (requiredRoles: Role[]) => {
   return (req: MiddlewareRequest, res: Response, next: NextFunction) => {
-    // Extract JWT token from authorization header
-    const token = req.headers.authorization?.split(' ')[1];
+    // Extract JWT token from the request cookies
+    const token = req.cookies.token;
 
     if (!token) {
       return res.status(401).json({ message: 'Authorization token not provided' });
