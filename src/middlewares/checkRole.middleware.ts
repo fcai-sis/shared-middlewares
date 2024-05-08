@@ -11,7 +11,7 @@ import jwt from 'jsonwebtoken';
 
 type TokenPayload = { userId: string; role: Role };
 
-type MiddlewareRequest = Request & { user?: TokenPayload };
+type MiddlewareRequest = Request<{}, {}, { user?: TokenPayload }>;
 
 /**
  * Checks if the user has one of the required roles
