@@ -7,7 +7,8 @@ enum Role {
 }
 
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jose from "node-jose";
+
 
 type TokenPayload = { id: string; role: Role };
 
@@ -32,7 +33,9 @@ function getTokenAuthorizationHeader(req: MiddlewareRequest) {
  * @returns A middleware function that checks if the user has one of the required roles
  */
 const checkRole = (requiredRoles: Role[]) => {
-  return (req: MiddlewareRequest, res: Response, next: NextFunction) => {
+  return async (req: MiddlewareRequest, res: Response, next: NextFunction) => {
+    const key = await jose.JWK.createKey('oct', 256, { alg: 'A256GCM', use: 'enc' });
+
     // Extract JWT token from the request cookies
     const token = req.cookies.token ?? getTokenAuthorizationHeader(req);
 
@@ -44,10 +47,8 @@ const checkRole = (requiredRoles: Role[]) => {
 
     try {
       // Verify JWT token and decode payload
-      const decodedToken = jwt.verify(
-        token,
-        process.env.JWT_SECRET as string
-      ) as TokenPayload;
+      const result = await jose.JWE.createDecrypt(key).decrypt(token);
+      const decodedToken = JSON.parse(result.payload.toString()) as TokenPayload;
 
       // Fetch user's role from the decoded token
       const userRole = decodedToken.role;
