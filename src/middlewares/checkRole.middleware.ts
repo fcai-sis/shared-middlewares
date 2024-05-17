@@ -34,7 +34,7 @@ function getTokenAuthorizationHeader(req: MiddlewareRequest) {
  */
 const checkRole = (requiredRoles: Role[]) => {
   return async (req: MiddlewareRequest, res: Response, next: NextFunction) => {
-    const key = await jose.JWK.createKey('oct', 256, { alg: 'A256GCM', use: 'enc' });
+    const key = await jose.JWK.asKey(process.env.JWT_SECRET as string, "json");
 
     // Extract JWT token from the request cookies
     const token = req.cookies.token ?? getTokenAuthorizationHeader(req);
