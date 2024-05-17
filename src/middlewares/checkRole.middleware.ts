@@ -9,7 +9,7 @@ enum Role {
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-type TokenPayload = { userId: string; role: Role };
+type TokenPayload = { id: string; role: Role };
 
 type MiddlewareRequest = Request<{}, {}, { user?: TokenPayload }>;
 
@@ -62,7 +62,7 @@ const checkRole = (requiredRoles: Role[]) => {
       }
 
       // Attach userId and role to the request object for further processing
-      req.body.user = { userId: decodedToken.userId, role: userRole };
+      req.body.user = { id: decodedToken.id, role: userRole };
 
       next(); // User has one of the required roles, proceed to the next middleware or route handler
     } catch (error) {
