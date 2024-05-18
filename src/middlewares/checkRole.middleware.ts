@@ -33,8 +33,8 @@ function getTokenAuthorizationHeader(req: MiddlewareRequest) {
  */
 const checkRole = (requiredRoles: Role[]) => {
   return (req: MiddlewareRequest, res: Response, next: NextFunction) => {
-    // Extract JWT token from the request cookies
-    const token = req.cookies.token ?? getTokenAuthorizationHeader(req);
+    // Extract JWT token from the authorization header
+    const token = getTokenAuthorizationHeader(req);
 
     if (!token) {
       return res
