@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as validator from "express-validator";
 
-const validateRequestBodyMiddleware = (
+const validateRequestMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -20,4 +20,4 @@ const validateRequestBodyMiddleware = (
   next();
 };
 
-export default validateRequestBodyMiddleware;
+export default validateRequestMiddleware;
