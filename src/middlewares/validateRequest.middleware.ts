@@ -20,4 +20,4 @@ const validateRequestMiddleware = (
   next();
 };
 
-export default validateRequestMiddleware;
+export { validateRequestMiddleware };
