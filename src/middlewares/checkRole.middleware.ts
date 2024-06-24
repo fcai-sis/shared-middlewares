@@ -1,9 +1,9 @@
 enum Role {
-  ADMIN = "admin",
-  STUDENT = "student",
-  EMPLOYEE = "employee",
-  INSTUCTOR = "instructor",
-  TEACHING_ASSISTANT = "teachingAssistant",
+  ADMIN = "ADMIN",
+  STUDENT = "STUDENT",
+  EMPLOYEE = "EMPLOYEE",
+  INSTRUCTOR = "INSTRUCTOR",
+  TEACHING_ASSISTANT = "TEACHING_ASSISTANT",
 }
 
 import { Request, Response, NextFunction } from "express";
