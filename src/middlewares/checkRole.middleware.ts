@@ -11,7 +11,11 @@ import jwt from "jsonwebtoken";
 
 type TokenPayload = { userId: string; role: Role };
 
-type MiddlewareRequest = Request<{}, {}, { user?: TokenPayload }>;
+type MiddlewareRequest = Request<
+  {},
+  {},
+  { user?: TokenPayload; token: string }
+>;
 
 function getTokenAuthorizationHeader(req: MiddlewareRequest) {
   const authHeader = req.headers.authorization;
@@ -63,6 +67,7 @@ const checkRole = (requiredRoles: Role[]) => {
 
       // Attach userId and role to the request object for further processing
       req.body.user = { userId: decodedToken.userId, role: userRole };
+      req.body.token = token;
 
       next(); // User has one of the required roles, proceed to the next middleware or route handler
     } catch (error) {
