@@ -32,17 +32,17 @@ const middlewares = [
     .isInt({ min: 1 })
     .withMessage("Query parameter pageSize must be an integer greater than 0"),
 
-
   (req: Request, res: Response, next: NextFunction) => {
-
     // If any of the validations above failed, return an error response
     const errors = validator.validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(400).json({
-        error: {
-          message: errors.array()[0].msg,
-        },
+        errors: [
+          {
+            message: errors.array()[0].msg,
+          },
+        ],
       });
     }
 
@@ -54,4 +54,4 @@ const middlewares = [
   },
 ];
 
-export { middlewares as paginationQueryParamsMiddleware }
+export { middlewares as paginationQueryParamsMiddleware };

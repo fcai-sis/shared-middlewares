@@ -41,9 +41,9 @@ const checkRole = (requiredRoles: Role[]) => {
     const token = getTokenAuthorizationHeader(req);
 
     if (!token) {
-      return res
-        .status(401)
-        .json({ message: "Authorization token not provided" });
+      return res.status(401).json({
+        errors: [{ message: "Authorization token not provided" }],
+      });
     }
 
     try {
@@ -59,9 +59,13 @@ const checkRole = (requiredRoles: Role[]) => {
       // Check if the user's role matches any of the required roles
       if (!requiredRoles.includes(userRole)) {
         return res.status(403).json({
-          message: `Unauthorized: User must be any of the following: ${requiredRoles.join(
-            ", "
-          )}`,
+          errors: [
+            {
+              message: `Unauthorized: User must be any of the following: ${requiredRoles.join(
+                ", "
+              )}`,
+            },
+          ],
         });
       }
 
@@ -72,7 +76,9 @@ const checkRole = (requiredRoles: Role[]) => {
       next(); // User has one of the required roles, proceed to the next middleware or route handler
     } catch (error) {
       console.error("Authorization failed:", error);
-      res.status(401).json({ message: "Invalid token" });
+      res.status(401).json({
+        errors: [{ message: "Invalid token" }],
+      });
     }
   };
 };
