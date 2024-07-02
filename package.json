@@ -1,7 +1,7 @@
 {
   "name": "@fcai-sis/shared-middlewares",
   "description": "All shared Express middleware and other reusable logical units",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
